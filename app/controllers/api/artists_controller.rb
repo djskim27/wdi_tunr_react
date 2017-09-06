@@ -1,4 +1,5 @@
 class Api::ArtistsController < ApplicationController
+    before_action :authenticate_user!
     def index
       @artists = Artist.all
       render json: @artists
@@ -6,7 +7,11 @@ class Api::ArtistsController < ApplicationController
   
     def show
       @artist = Artist.find(params[:id])
-      render json: @artist
+      @songs = @artist.songs
+      render json: {
+          artist: @artist,
+          songs: @songs
+    }
     end
   
     def create
